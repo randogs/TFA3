@@ -20,7 +20,7 @@ class UserAccounts extends BaseController
     public function newForm(): string
     {
         return view('user_accounts/new', [
-            'title' => 'New User',
+            'title'  => 'New User',
             'values' => ['username' => '', 'full_name' => ''],
             'errors' => [],
         ]);
@@ -117,10 +117,14 @@ class UserAccounts extends BaseController
             $extension = $avatar->getMimeType() === 'image/png' ? 'png' : 'jpg';
             $filename = bin2hex(random_bytes(16)) . '.' . $extension;
 
-            service('image')
-                ->withFile($avatar->getTempName())
-                ->fit(150, 150, 'center')
-                ->save($folder . $filename);
+            if (extension_loaded('gd')) {
+                service('image')
+                    ->withFile($avatar->getTempName())
+                    ->fit(150, 150, 'center')
+                    ->save($folder . $filename);
+            } else {
+                $avatar->move($folder, $filename);
+            }
 
             $values['avatar'] = $filename;
         }
