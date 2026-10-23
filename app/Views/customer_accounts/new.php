@@ -3,22 +3,10 @@
 <?= $this->section('content') ?>
 
 <h1><?= esc($title) ?></h1>
-<p><a href="<?= site_url('user-accounts') ?>">Back to User Accounts</a></p>
+<p><a href="<?= site_url('customer-accounts') ?>">Back to Customer Accounts</a></p>
 
-<form action="<?= site_url($formAction ?? 'users') ?>"
-      method="post"
-      enctype="multipart/form-data"
-      novalidate>
+<form action="<?= site_url($formAction ?? 'customers') ?>" method="post" novalidate>
     <?= csrf_field() ?>
-
-    <p>
-        <label for="username">Username *</label><br>
-        <input id="username" name="username"
-               value="<?= esc($values['username'] ?? '') ?>" maxlength="50">
-        <?php if (isset($errors['username'])): ?>
-            <br><small><?= esc($errors['username']) ?></small>
-        <?php endif; ?>
-    </p>
 
     <p>
         <label for="full_name">Full name *</label><br>
@@ -29,27 +17,25 @@
         <?php endif; ?>
     </p>
 
-    <?php if (isset($formAction)): ?>
-        <?php if (! empty($values['avatar'])): ?>
-            <p>
-                Current avatar:<br>
-                <img src="<?= base_url('uploads/avatars/' . rawurlencode($values['avatar'])) ?>"
-                     alt="Current avatar" width="80" height="80"
-                     style="object-fit: cover;">
-            </p>
+    <p>
+        <label for="email">Email *</label><br>
+        <input type="email" id="email" name="email"
+               value="<?= esc($values['email'] ?? '') ?>" maxlength="100">
+        <?php if (isset($errors['email'])): ?>
+            <br><small><?= esc($errors['email']) ?></small>
         <?php endif; ?>
+    </p>
 
-        <p>
-            <label for="avatar">Avatar (optional; JPG or PNG, up to 2 MB)</label><br>
-            <input type="file" id="avatar" name="avatar"
-                   accept="image/jpeg,image/png">
-            <?php if (isset($errors['avatar'])): ?>
-                <br><small><?= esc($errors['avatar']) ?></small>
-            <?php endif; ?>
-        </p>
-    <?php endif; ?>
+    <p>
+        <label for="phone">Phone (optional)</label><br>
+        <input type="tel" id="phone" name="phone"
+               value="<?= esc($values['phone'] ?? '') ?>" maxlength="20">
+        <?php if (isset($errors['phone'])): ?>
+            <br><small><?= esc($errors['phone']) ?></small>
+        <?php endif; ?>
+    </p>
 
-    <button type="submit">Save User</button>
+    <button type="submit">Save Customer</button>
 </form>
 
 <?= $this->endSection() ?>
